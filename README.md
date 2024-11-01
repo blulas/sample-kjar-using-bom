@@ -1,5 +1,5 @@
 # IBM Business Automation Manager Open Editions - KJAR Sample (with BOM)
-This repository contains a sample KJAR for use with BAMOE v8.0.6.  This sample demonstrates how to properly use the Maven Bill-of-Materials (BOM) in order to properly manage the varous versions of BAMOE's libraries.
+This repository contains a sample KJAR for use with BAMOE v8.0.x.  This sample demonstrates how to properly use the Maven Bill-of-Materials (BOM) in order to properly manage the various versions of BAMOE's libraries.
 
 ## Overview
 The purpose of this repository is to guide the developer through the setup and use of BAMOE v8.  The `first step` is to make sure you local development environment or workstation is configured with the proper developer tooling, frameworks, and runtimes.  Once your development environment is configured, you can proceed to the remaining steps to create the project, add assets and unit tests, and deploy your solution.

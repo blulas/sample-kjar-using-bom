@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<!-- POM -->
-	<groupId>com.bofa.bamoe.examples</groupId>
-	<artifactId>loan-application-kjar</artifactId>
+	<groupId>com.ibm.bamoe.examples</groupId>
+	<artifactId>sample-kjar-using-bom</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>kjar</packaging>
 
