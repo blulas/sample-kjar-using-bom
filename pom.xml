@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- POM -->
+	<groupId>com.bofa.bamoe.examples</groupId>
+	<artifactId>loan-application-kjar</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>kjar</packaging>
+
+	<!-- Global Properties -->
+	<properties>
+		<!-- General Properties -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- Java Properties -->
+		<java.version>11</java.version>
+
+		<!-- Common Maven Plugins -->
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.parameters>true</maven.compiler.parameters>
+		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+		<maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
+		<maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
+		<maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
+
+		<!-- Testing Properties -->
+		<junit.version>4.13.2</junit.version>
+		<skipTests>true</skipTests>
+
+		<!-- Logging Dependencies -->
+		<slf4j.version>1.7.32</slf4j.version>
+		<logback.version>1.2.10</logback.version>
+
+		<!-- BAMOE -->
+		<bamoe.bom.version>8.0.6.redhat-00006</bamoe.bom.version>
+        <version.org.kie>7.67.2.Final-redhat-00025</version.org.kie>
+
+        <!-- Rules Configuration Options -->
+        <rules-config-validateDMN>disable</rules-config-validateDMN>
+	</properties>
+
+	<!-- Dependency Management -->
+	<dependencyManagement>
+		<dependencies>
+			<!-- BAMOE Libraries -->
+			<dependency>
+				<groupId>com.redhat.ba</groupId>
+				<artifactId>ba-platform-bom</artifactId>
+				<version>${bamoe.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!-- BAMOE Dependencies -->
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-internal</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jbpm</groupId>
+            <artifactId>jbpm-bpmn2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-core</artifactId>
+        </dependency>
+      
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-engine</artifactId>
+		</dependency>
+
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-compiler</artifactId>
+        </dependency>
+
+		<!-- Testing Dependencies -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+<build>
+	<defaultGoal>install</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.kie</groupId>
+                <artifactId>kie-maven-plugin</artifactId>
+                <version>${version.org.kie}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <validateDMN>${rules-config-validateDMN}</validateDMN>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                  <source>${java.version}</source>
+                  <target>${java.version}</target>
+                </configuration>
+			</plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-testResources</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                          <goal>testResources</goal>
+                        </goals>
+                        <configuration>
+                          <resources>
+                            <resource>
+                              <directory>src/test/resources</directory>
+                              <excludes>
+                                <exclude>**/*.*.scesim</exclude>
+                              </excludes>
+                            </resource>
+                          </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+		
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.plugin.version}</version>
+				<configuration>
+				   <systemPropertyVariables>
+					  <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+					  <maven.home>${maven.home}</maven.home>
+				   </systemPropertyVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+    </build>
+</project>

@@ -1,0 +1,89 @@
+package com.ibm.bamoe.examples;
+
+import com.ibm.bamoe.examples.LoanApplication;
+
+//--------------------------------
+// Rules
+//--------------------------------
+rule SmallDepositApprove 
+	dialect "mvel"
+	ruleflow-group "loans"
+    
+    when
+        $l: LoanApplication(applicant.age >= 20, deposit < 1000, amount <= 2000)
+    then
+        modify($l) { 
+            setApproved(true) 
+        };
+end
+
+rule SmallDepositReject
+	dialect "mvel"
+	ruleflow-group "loans"
+   
+    when
+        $l: LoanApplication(applicant.age >= 20, deposit < 1000, amount > 2000)
+    then
+        modify($l) { 
+            setApproved(false) 
+        };
+end
+
+rule LargeDepositApprove
+	dialect "mvel"
+	ruleflow-group "loans"
+    
+    when
+        $l: LoanApplication(applicant.age >= 20, deposit >= 1000, amount <= maxAmount)
+    then
+        modify($l) { 
+            setApproved(true) 
+        };
+end
+
+rule LargeDepositReject
+	dialect "mvel"
+	ruleflow-group "loans"
+    
+    when
+        $l: LoanApplication(applicant.age >= 20, deposit >= 1000, amount > maxAmount)
+    then
+        modify($l) { 
+            setApproved(false) 
+        };
+end
+
+rule NotAdultApplication
+	dialect "mvel"
+	ruleflow-group "loans"
+    
+    when
+        $l: LoanApplication(applicant.age < 20)
+    then
+        modify($l) { 
+            setApproved(false) 
+        };
+end
+
+rule TooOldApplication
+	dialect "mvel"
+	ruleflow-group "loans"
+    
+    when
+        $l: LoanApplication(applicant.age >= 70)
+    then
+        modify($l) { 
+            setApproved(false) 
+        };
+end
+
+//--------------------------------
+// Queries
+//--------------------------------
+query FindApproved
+    $l: LoanApplication(approved)
+end
+
+query FindNotApprovedIdAndAmount
+    LoanApplication(!approved, $id: id, $amount : amount)
+end
